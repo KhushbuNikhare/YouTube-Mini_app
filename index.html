@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100&family=Open+Sans&family=Piazzolla:ital,wght@0,900;1,900&family=Playfair+Display:wght@500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/navbar.css" />
+    <title>YouTube</title>
+    <style>
+        #search_results {
+            display: grid;
+            grid-template-columns: 19% 19% 19%;
+            grid-gap: 2%;
+            margin-left: 3%;
+            margin-top: 2%;
+            justify-content: space-around;
+        }
+
+        #search_results h4 {
+            width: 127%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="flex" id="left-bar">
+        <i class="fas fa-bars"></i>
+        <div><i class="fas fa-home"></i>
+            <p>Home</p>
+        </div>
+        <div><i class="fas fa-compass"></i>
+            <p>Explore</p>
+        </div>
+        <div><i class="fas fa-play-circle"></i>
+            <p>Subscription</p>
+        </div>
+        <div><i class="fas fa-book"></i>
+            <p>Library</p>
+        </div>
+    </div>
+
+    <div id="right-bar" class="flex">
+        <img id="logo" onclick="home_page()"
+            src="https://media.idownloadblog.com/wp-content/uploads/2020/08/YouTube-logo-black-background.png" />
+
+        <div class="top">
+            <input type="text" id="search" placeholder="Search" />
+
+            <button onclick="searchVideos()"><i class="fas fa-search"></i></button>
+
+        </div>
+
+        <button id="mic"> <i class="fas fa-microphone"></i></button>
+
+        <div id="icons">
+            <button id="icons">
+                <i class="fas fa-video"></i>
+                <i class="fas fa-th"></i>
+                <i class="fas fa-bell"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="flex display down-bar">
+        <button>All</button>
+        <button onclick="trend()">Trending</button>
+    </div>
+
+
+    <div id="search_results"></div>
+
+</body>
+
+</html>
+
+<script>
+
+    let API = "AIzaSyAJKfjVRli1M0BKvp5sqkmfn0x8vwL7w7g";
+    let search_results_div = document.getElementById("search_results");
+
+    async function searchVideos() {
+        try {
+            let inp = document.getElementById("search").value;
+
+            let res = await fetch(
+                `https://youtube.googleapis.com/youtube/v3/search?q=${inp}&key=${API}&type=video&maxResults=20&part=snippet`
+            );
+
+            let data = await res.json();
+            console.log("data:", data);
+
+            let array_of_videos = data.items;
+
+            appendVideos(array_of_videos);
+        } catch (err) {
+            console.log("err:", err);
+        }
+    }
+
+    //showing data on webpage 
+
+    const appendVideos = (arr) => {
+        arr.forEach(({ snippet, id: { videoId } }) => {
+            //console.log(arr);
+            // console.log("url:", url)
+            // console.log("videoId:", videoId);
+
+            let div = document.createElement("div");
+
+            let url = snippet.thumbnails.medium.url;
+
+            let img = document.createElement('img');
+            img.src = url;
+
+            let title = snippet.title;
+            let h4 = document.createElement('h4');
+            h4.innerText = title;
+
+            let video_data = {
+                snippet,
+                videoId,
+            };
+
+            div.onclick = () => {
+                showVideo(video_data);
+            };
+
+            div.append(img, h4);
+            console.log(div);
+
+            search_results_div.append(div);
+
+        });
+    };
+
+    const showVideo = (video_data) => {
+        console.log("video_data:", video_data);
+
+        localStorage.setItem("clicked_video", JSON.stringify(video_data));
+        window.location.href = "video.html";
+    };
+
+    function trend() {
+        window.location.href = "trending.html";
+    }
+
+    function home_page() {
+        window.location.href = "index.html"
+    }
+
+</script>

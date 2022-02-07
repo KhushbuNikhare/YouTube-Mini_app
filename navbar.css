@@ -1,0 +1,108 @@
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
+.flex {
+  background-color: #202020;
+}
+
+#left-bar {
+  width: 6%;
+  height: 750px;
+  /* border: 1px solid green; */
+  color: white;
+  text-align: center;
+  position: fixed;
+}
+
+#left-bar i {
+  margin-top: 50%;
+  width: 100%;
+  cursor: pointer;
+}
+
+#left-bar p {
+  margin-top: 2%;
+  font-size: small;
+  cursor: pointer;
+}
+
+#right-bar {
+  /* border: 1px solid red; */
+  height: 60px;
+  margin-left: 6%;
+}
+
+#right-bar #logo {
+  width: 13%;
+  height: 60px;
+  margin-left: 1%;
+}
+
+#right-bar input {
+  position: absolute;
+  margin: 15px 7%;
+  width: 500px;
+  text-align: left;
+  background-color: #121212;
+  color: silver;
+  border: 1px solid gray;
+  height: 40px;
+}
+
+#right-bar .top {
+  margin-top: -5%;
+  margin-left: 10%;
+}
+
+#right-bar button {
+  width: 60px;
+  height: 44.5px;
+  cursor: pointer;
+  background-color: #313131;
+  color: white;
+  border: none;
+  position: absolute;
+  margin: 15px 40.5%;
+}
+
+#right-bar #mic {
+  border-radius: 50%;
+  background-color: black;
+  margin-left: 55%;
+}
+
+i {
+  font-size: large;
+}
+
+.down-bar {
+  /* border: 1px solid red; */
+  height: 60px;
+  margin-left: 6%;
+  display: flex;
+  border: 1px solid gray;
+}
+
+.down-bar button {
+  margin-top: 0.6%;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 7%;
+  height: 40px;
+  border: 1px solid gray;
+  background-color: #373737;
+  margin-left: 5%;
+  font-weight: 800;
+}
+
+#icons button {
+  width: 20%;
+  margin-left: 70%;
+  background-color: #202020;
+}
+
+#icons i {
+  margin-left: 20%;
+}

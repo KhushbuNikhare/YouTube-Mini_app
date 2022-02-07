@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #trending {
+            display: grid;
+            grid-template-columns: 25% 25% 25%;
+            gap: 8%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="trending"></div>
+</body>
+
+</html>
+<script>
+    let key = "AIzaSyAJKfjVRli1M0BKvp5sqkmfn0x8vwL7w7g"
+
+    let trending = document.getElementById("trending")
+    window.addEventListener("load", async function () {
+        let url = `https://youtube.googleapis.com/youtube/v3/search?maxResults=20&q=trending%20video&type=video&key=${key}&part=snippet`
+
+        let res = await fetch(url)
+        let data = await res.json();
+        console.log(data)
+
+        appnedVideos(data.items)
+    })
+
+    function appnedVideos(video_data) {
+        trending.innerHTML = null;
+        video_data.forEach(({ id: { videoId } }) => {
+            // console.log(videoId);
+
+            let div = document.createElement("div");
+
+            div.innerHTML = `<iframe width="460" height="225" src="https://www.youtube.com/embed/${videoId}"title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+            // <iframe width="360" height="225" src="https://www.youtube.com/embed/UrfpkvvRTns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            div.style.marginTop = "20px";
+
+            trending.append(div);
+        });
+
+    }
+
+
+
+</script>

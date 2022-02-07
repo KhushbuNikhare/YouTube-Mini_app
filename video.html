@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100&family=Open+Sans&family=Piazzolla:ital,wght@0,900;1,900&family=Playfair+Display:wght@500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/navbar.css" />
+    <title>Document</title>
+    <style>
+        div {
+            border: 1px solid black;
+        }
+
+        #main {
+            display: flex;
+            height: 480px;
+            margin-left: 6%;
+        }
+
+        #video_details {
+            flex: 3;
+            margin: 2px 2px;
+
+        }
+
+        #recommendations {
+            flex: 1;
+            overflow: scroll;
+        }
+
+        #recommendations iframe {
+            width: 250px;
+            height: 100px;
+            margin-bottom: 3px;
+            margin-top: 3px;
+        }
+
+        #video_details #iframepic {
+            width: 99.7%;
+            height: 99%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="flex" id="left-bar">
+        <i class="fas fa-bars"></i>
+        <div><i class="fas fa-home"></i>
+            <p>Home</p>
+        </div>
+        <div><i class="fas fa-compass"></i>
+            <p>Explore</p>
+        </div>
+        <div><i class="fas fa-play-circle"></i>
+            <p>Subscription</p>
+        </div>
+        <div><i class="fas fa-book"></i>
+            <p>Library</p>
+        </div>
+    </div>
+
+    <div id="right-bar" class="flex">
+        <img id="logo" onclick="home_page()"
+            src="https://media.idownloadblog.com/wp-content/uploads/2020/08/YouTube-logo-black-background.png" />
+
+        <div class="top">
+            <input type="text" id="search" placeholder="Search" />
+
+            <button onclick="searchVideos()"><i class="fas fa-search"></i></button>
+
+        </div>
+
+        <button id="mic"> <i class="fas fa-microphone"></i></button>
+        <div id="icons">
+            <button id="icons">
+                <i class="fas fa-video"></i>
+                <i class="fas fa-th"></i>
+                <i class="fas fa-bell"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="flex display down-bar">
+        <button>All</button>
+        <button onclick="trend()">Trending</button>
+    </div>
+
+
+    <div id="main">
+        <div id="video_details"></div>
+        <div id="recommendations"></div>
+    </div>
+</body>
+
+</html>
+<script>
+    //1. we need to show video
+    //2. fetch "clicked_video" data from localStorage
+
+    let video_data = JSON.parse(localStorage.getItem("clicked_video"));
+    console.log(video_data);
+
+    //description ---> video_data.snippet.description
+
+
+    let video_div = document.getElementById('video_details');
+    let recommendations = document.getElementById('recommendations')
+
+    let iframe = document.createElement("iframe");
+    iframe.setAttribute("id", "iframepic")
+    iframe.src = `https://www.youtube.com/embed/${video_data.videoId}`;
+    iframe.width = "80%";
+    iframe.height = "80%";
+    iframe.setAttribute("allowfullscreen", true);
+
+    video_div.append(iframe);
+
+
+    let key = "AIzaSyAJKfjVRli1M0BKvp5sqkmfn0x8vwL7w7g"
+
+    window.addEventListener("load", async function () {
+        let url = `https://youtube.googleapis.com/youtube/v3/search?maxResults=20&q=trending%20video&type=video&key=${key}&part=snippet`
+
+        let res = await fetch(url)
+        let data = await res.json();
+        console.log(data)
+
+        appnedVideos(data.items)
+    })
+
+    function appnedVideos(video_data) {
+        recommendations.innerHTML = null;
+        video_data.forEach(({ id: { videoId } }) => {
+            // console.log(videoId);
+
+            let div = document.createElement("div");
+
+            div.innerHTML = `<iframe width="460" height="225" src="https://www.youtube.com/embed/${videoId}"title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+            // <iframe width="360" height="225" src="https://www.youtube.com/embed/UrfpkvvRTns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            // div.style.marginTop = "20px";
+
+            recommendations.append(div);
+        });
+    }
+
+    function home_page() {
+        window.location.href = "index.html"
+    }
+
+    function trend() {
+        window.location.href = "trending.html";
+    }
+
+</script>
